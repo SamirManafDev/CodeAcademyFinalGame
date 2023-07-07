@@ -11,7 +11,7 @@ public class Climb : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            other.transform.DOMove(endTransform.position, 4f);
+            other.transform.DOMove(endTransform.position, 2f);
 
             animator.SetBool("Climb", true);
 

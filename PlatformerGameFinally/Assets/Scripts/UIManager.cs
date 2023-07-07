@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject starTwo;
     [SerializeField] GameObject starThree;
     [SerializeField] GameObject gameOver;
-    
+    [SerializeField] AudioClip UIClick;
     public static UIManager Instance { get; set; }
 
     private void Awake()
@@ -96,9 +96,16 @@ public class UIManager : MonoBehaviour
     public void GameOverOpen()
     {
         gameOver.SetActive(true);
+        UnityEngine.Cursor.visible = true;
     }
     public void GameOverClose()
     {
+        UnityEngine.Cursor.visible = false;
         gameOver.SetActive(false);
+    }
+
+    public void UISound()
+    {
+        GameObject.Find("UIClick Sound").GetComponent<AudioSource>().Play();
     }
 }

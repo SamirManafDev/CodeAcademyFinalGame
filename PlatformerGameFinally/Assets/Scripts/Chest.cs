@@ -8,6 +8,8 @@ public class Chest : MonoBehaviour
     [SerializeField] GameObject gameWin;
     [SerializeField] AudioClip openChest;
     [SerializeField] ParticleSystem coinParticle;
+    [SerializeField] GameObject chestKey;
+
     private void OnCollisionEnter(Collision collision)
     {
         
@@ -15,14 +17,13 @@ public class Chest : MonoBehaviour
         {
             animatorChest.SetBool("Open", true);
             GameObject.Find("Chest Sound").GetComponent<AudioSource>().Play();
-            FindAnyObjectByType<PlayerMovement>().animator.SetBool("Happy", true);
+            chestKey.SetActive(false);
             StartCoroutine(CoinParticle());
             StartCoroutine(GameWin());
         }
         else
         {
             animatorChest.SetBool("Open",false);
-            FindAnyObjectByType<PlayerMovement>().animator.SetBool("Happy", false);
         }
     }
     IEnumerator GameWin()
@@ -30,6 +31,8 @@ public class Chest : MonoBehaviour
         yield return new WaitForSeconds(2f);
         gameWin.SetActive(true);
         UIManager.Instance.OpenRestartPanel();
+        Time.timeScale = 0f;
+        UnityEngine.Cursor.visible = true;
     }
     IEnumerator CoinParticle()
     {

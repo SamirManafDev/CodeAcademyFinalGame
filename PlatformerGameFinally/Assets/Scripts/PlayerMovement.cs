@@ -55,8 +55,6 @@ public class PlayerMovement : MonoBehaviour
 
             rb.MovePosition(transform.position +
             (_direction.normalized * (_speed * Time.deltaTime)));
-
-
             animator.SetBool("Runing", true);
 
         }
@@ -140,6 +138,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _pauseMenu.SetActive(true);
             Time.timeScale = 0f;
+            VolumeSlider.value = 0f;
 
         }
 
@@ -148,6 +147,8 @@ public class PlayerMovement : MonoBehaviour
     {
         _pauseMenu.SetActive(false);
         Time.timeScale = 1f;
+        VolumeSlider.value = 1f;
+        UnityEngine.Cursor.visible = false;
     }
     public void Quit()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerKey : MonoBehaviour
 {
-    [SerializeField] GameObject key;
+    [SerializeField] public GameObject key;
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Key")
