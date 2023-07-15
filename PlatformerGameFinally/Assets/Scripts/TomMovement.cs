@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TomMovement : MonoBehaviour
 {
-    [SerializeField] Animator TomAnimator;
-    [SerializeField] AudioClip TomHunt;
+    [SerializeField] public  Animator TomAnimator;
+    //[SerializeField] AudioClip TomHunt;
     public Transform player;
     public float moveSpeed = 1f;
     private void Update()
@@ -26,13 +26,14 @@ public class TomMovement : MonoBehaviour
             moveSpeed = 0;
         }
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            moveSpeed = 0f;
-            GameObject.Find("TomHunt Sound").GetComponent<AudioSource>().Play();
-            TomAnimator.SetBool("Hunt", true);
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Player")
+    //    {
+    //        GetComponent<PlayerMovement>()._health -= 30f;
+    //        //moveSpeed = 0f;
+    //        GameObject.Find("TomHunt Sound").GetComponent<AudioSource>().Play();
+    //        TomAnimator.SetBool("Hunt", true);
+    //    }
+    //}
 }

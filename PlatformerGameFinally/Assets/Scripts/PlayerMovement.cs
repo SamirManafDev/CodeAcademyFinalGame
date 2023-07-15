@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] AudioClip jumpSound;
     [SerializeField] AudioClip health;
     [SerializeField] AudioClip thron;
+    [SerializeField] AudioClip TomHuntSound;
     [SerializeField] GameObject heartOne;
     [SerializeField] GameObject heartTwo;
     [SerializeField] GameObject heartThree;
@@ -67,13 +68,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && Physics.Raycast(transform.position, Vector3.down, 1f, layer))
         {
-            animator.SetBool("Jump", true);
+            animator.SetTrigger("JUMP");
+            //animator.SetBool("Jump", true);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
             GameObject.Find("Jump Sound").GetComponent<AudioSource>().Play();
         }
-        else
+        if (Input.GetKeyUp(KeyCode.Space))
         {
-            animator.SetBool("Jump", false);
+            //animator.SetBool("Jump", false);
+            //animator.SetBool("JumpStop", true);
         }
     }
 
@@ -83,6 +86,12 @@ public class PlayerMovement : MonoBehaviour
         {
             GameObject.Find("Thorn Sound").GetComponent<AudioSource>().Play();
             _health -= 30f;
+            if (_health == 0)
+            {
+                UIManager.Instance.GameOverOpen();
+                Time.timeScale = 0f;
+            }
+
         }
         if (collision.gameObject.tag == "Heart")
         {
@@ -90,11 +99,23 @@ public class PlayerMovement : MonoBehaviour
             _health += 30;
             Destroy(collision.gameObject);
         }
-        if (collision.gameObject.tag == "Tom")
+        if (collision.gameObject.tag == "Tom"&&_health==30f)
         {
-            StartCoroutine(TomHunt());
             _speed = 0;
             VolumeSlider.value = 0f;
+            _health -= 30f;
+            FindAnyObjectByType<TomMovement>().TomAnimator.SetBool("Hunt", true);
+            StartCoroutine(TomHunt());
+
+        }
+        if (collision.gameObject.tag == "Tom"&&_health>0f)
+        {
+            _health -= 30f;
+            Debug.Log("123");
+            //GetComponent<TomMovement>().moveSpeed = 0f;
+            rb.AddForce((transform.up * jumpForce)*2f, ForceMode.Impulse);
+            GameObject.Find("TomHunt Sound").GetComponent<AudioSource>().Play();
+
         }
 
     }
@@ -102,7 +123,6 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(4f);
         UIManager.Instance.GameOverOpen();
-        Time.timeScale = 0f;
     }
     private void CheckHealth()
     {
@@ -112,8 +132,9 @@ public class PlayerMovement : MonoBehaviour
                 heartOne.SetActive(false);
                 heartTwo.SetActive(false);
                 heartThree.SetActive(false);
-                UIManager.Instance.GameOverOpen();
-                Time.timeScale = 0f;
+                
+                //UIManager.Instance.GameOverOpen();
+                //Time.timeScale = 0f;
                 break;
             case 30:
                 heartOne.SetActive(true);
